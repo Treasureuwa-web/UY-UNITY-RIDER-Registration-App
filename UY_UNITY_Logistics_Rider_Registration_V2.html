@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UY UNITY Logistics - Rider Registration</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#050505;color:#fff}
+.container{width:min(94%,520px);margin:auto;padding:28px 0 40px}
+.logo{width:58px;height:58px;border:2px solid #fff;border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;margin-bottom:16px}
+h1{margin:0 0 7px;font-size:28px}.sub{color:#aaa;line-height:1.5;margin:0 0 24px}
+.card{background:#111;border:1px solid #292929;border-radius:18px;padding:20px}
+label{display:block;color:#ccc;font-size:13px;margin:14px 0 7px}
+input,select,textarea{width:100%;padding:14px;border:1px solid #333;border-radius:11px;background:#080808;color:#fff;font-size:15px;outline:none}
+textarea{min-height:85px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.section{font-weight:800;margin:4px 0 12px}
+button{width:100%;padding:15px;border:0;border-radius:12px;background:#fff;color:#000;font-size:16px;font-weight:800;cursor:pointer;margin-top:20px}
+.options{display:none;margin-top:22px}.options h2{font-size:19px;margin:0 0 8px}.options p{color:#aaa;font-size:13px;line-height:1.5}
+.option{margin-top:11px}.email{background:#fff}.whatsapp{background:#fff}.sms{background:#fff}
+.note{margin-top:15px;padding:12px;border-radius:10px;background:#181818;color:#aaa;font-size:12px;line-height:1.5}
+.small{text-align:center;color:#777;font-size:12px;margin-top:18px}
+@media(max-width:430px){.row{grid-template-columns:1fr}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">UY</div>
+  <h1>Rider Registration</h1>
+  <p class="sub">Apply to become a UY UNITY Logistics rider. Fill in your details carefully.</p>
+
+  <div class="card">
+    <form id="riderForm">
+      <div class="section">Personal Information</div>
+
+      <label>Full Name *</label>
+      <input id="fullName" required placeholder="Enter your full name">
+
+      <div class="row">
+        <div><label>Phone Number *</label><input id="phone" type="tel" required placeholder="08012345678"></div>
+        <div><label>Age *</label><input id="age" type="number" min="18" required placeholder="18+"></div>
+      </div>
+
+      <label>Email Address</label>
+      <input id="email" type="email" placeholder="example@email.com">
+
+      <label>Home Address *</label>
+      <textarea id="address" required placeholder="Enter your current home address"></textarea>
+
+      <div class="section" style="margin-top:25px">Rider Information</div>
+
+      <label>Vehicle Type *</label>
+      <select id="vehicle" required>
+        <option value="">Select vehicle</option>
+        <option>Motorcycle</option><option>Bicycle</option><option>Car</option>
+      </select>
+
+      <label>Vehicle / Plate Number *</label>
+      <input id="vehicleNumber" required placeholder="e.g. ABC-123-XY">
+
+      <label>Delivery Experience *</label>
+      <select id="experience" required>
+        <option value="">Select experience</option>
+        <option>No previous experience</option><option>Less than 1 year</option>
+        <option>1–2 years</option><option>3+ years</option>
+      </select>
+
+      <label>Preferred Delivery Area *</label>
+      <input id="area" required placeholder="e.g. Abuja, Wuse, Garki">
+
+      <div class="section" style="margin-top:25px">Emergency Contact</div>
+
+      <label>Emergency Contact Name *</label>
+      <input id="emergencyName" required placeholder="Full name">
+
+      <label>Emergency Contact Phone *</label>
+      <input id="emergencyPhone" type="tel" required placeholder="08012345678">
+
+      <button type="submit">Continue</button>
+      <div class="note">After submitting, choose Gmail, WhatsApp or SMS to send your application to UY UNITY.</div>
+    </form>
+
+    <div class="options" id="options">
+      <h2>Send Your Application</h2>
+      <p>Your application is ready. Choose how you want to send it to UY UNITY.</p>
+      <button class="option email" id="emailBtn">📧 Send via Gmail</button>
+      <button class="option whatsapp" id="whatsappBtn">💬 Send via WhatsApp</button>
+      <button class="option sms" id="smsBtn">📱 Send via SMS</button>
+      <button class="option" onclick="location.reload()">↩ Submit Another Application</button>
+    </div>
+  </div>
+
+  <div class="small">UY UNITY Logistics • Rider Registration</div>
+</div>
+
+<script>
+const DEST_EMAIL="uwaosakpamwan79@gmail.com";
+const DEST_PHONE="2347044480531";
+let message="";
+
+document.getElementById("riderForm").addEventListener("submit",function(e){
+  e.preventDefault();
+
+  const age=Number(document.getElementById("age").value);
+  if(age<18){alert("Rider registration is for applicants aged 18 or above.");return;}
+
+  const v=id=>document.getElementById(id).value.trim();
+
+  const subject="UY UNITY Logistics Rider Application - "+v("fullName");
+
+  message =
+`UY UNITY LOGISTICS - RIDER APPLICATION
+
+Full Name: ${v("fullName")}
+Phone Number: ${v("phone")}
+Age: ${age}
+Email: ${v("email") || "Not provided"}
+Home Address: ${v("address")}
+
+VEHICLE INFORMATION
+Vehicle Type: ${v("vehicle")}
+Vehicle/Plate Number: ${v("vehicleNumber")}
+Delivery Experience: ${v("experience")}
+Preferred Delivery Area: ${v("area")}
+
+EMERGENCY CONTACT
+Name: ${v("emergencyName")}
+Phone: ${v("emergencyPhone")}
+
+Application Status: Pending
+Submitted: ${new Date().toLocaleString()}`;
+
+  document.getElementById("riderForm").style.display="none";
+  document.getElementById("options").style.display="block";
+
+  document.getElementById("emailBtn").onclick=()=>{
+    window.location.href="mailto:"+DEST_EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(message);
+  };
+
+  document.getElementById("whatsappBtn").onclick=()=>{
+    window.location.href="https://wa.me/"+DEST_PHONE+"?text="+encodeURIComponent(message);
+  };
+
+  document.getElementById("smsBtn").onclick=()=>{
+    window.location.href="sms:"+DEST_PHONE+"?body="+encodeURIComponent(message);
+  };
+});
+</script>
+</body>
+</html>
